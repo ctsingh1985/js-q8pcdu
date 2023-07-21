@@ -1,0 +1,112 @@
+<div class="cq-placeholder" data-emptytext="${component.title @ context='text'}"
+     data-sly-test="${wcmmode.edit}"></div>
+
+<sly
+    data-sly-use.styleModel="com.adobe.cq.wcm.style.ComponentStyleInfo"
+    data-sly-use.paddingModel="com.akzonobel.core.slingmodels.common.v1.CommonPaddingSlingModel"
+    data-sly-use.orderHistory="com.akzonobel.core.slingmodels.components.v1.OrderHistory"
+    data-sly-use.accountDropdown="/apps/akzonobel-common/components/content/molecule/m12-my-account-dropdown.html"
+    data-sly-use.headingTemplate="/apps/akzonobel-common/components/content/atom/a1-heading.html"></sly>
+
+
+//<sly data-sly-test.productLabel="${orderHistory.orderHistoryHeading @ i18n}"></sly>
+
+<section
+	data-component="c81-order-history" 
+	 data-order-history-api="/en/store/api/orders"
+    data-product-product="${orderHistory.productLabel @ i18n}"
+    data-product-color="${orderHistory.colorLabel @ i18n}"
+     data-product-name="${orderHistory.productNameLabel @ i18n}"
+     data-product-quantity="${orderHistory.quantityLabel @ i18n}" 
+     data-product-price="${orderHistory.priceLabel @ i18n}"
+     data-product-buy-label="${orderHistory.buyLabel @ i18n}"
+     data-product-continue-shopping-label="${orderHistory.continueShoppingLabel @ i18n}"
+     data-product-continue-shopping-link="${orderHistory.continueShoppingLink @ i18n}"
+     data-product-target-blank="${orderHistory.targetBlank @ i18n}"
+     class="c81-order-history ${paddingModel.spacingTop} ${paddingModel.spacingBottom} ${styleModel.appliedCssClasses ? styleModel.appliedCssClasses : 'style-default'}"
+     data-scroll-component>
+
+     <div class="content-wrapper">
+        <sly
+          data-sly-call="${headingTemplate.heading @ headingText=orderHistory.orderHistoryHeading, className=className ? className : 'header-03 order-title', i18n=i18n, context=contextText}"></sly>
+      </div>
+	  <div class="js-accordion-element">
+          <!-- js will inject m114-add-order-history-accordion.hbs -->
+     </div>
+
+</section>
+
+
+
+=================  
+
+m12 HTL
+
+<sly data-sly-template.myAccountDropdown="${@ login, scrapBookLink, scrapBookLabel, myWorkspaceTitle, myWorkspaceLink}"
+     data-sly-use.iconTemplate="/apps/akzonobel-common/components/content/atom/icon.html"
+     data-sly-use.button="/apps/akzonobel-common/components/content/atom/button.html"
+     data-sly-use.textLink="/apps/akzonobel-common/components/content/atom/a2-text-link.html">
+  <div data-component="m12-my-account-dropdown" class="m12-my-account-dropdown"
+       data-logged-in="false">
+    <button class="close-button js-close-button">
+      <sly data-sly-call="${iconTemplate.icon @ iconName='cross'}"></sly>
+    </button>
+
+    <sly data-sly-call="${iconTemplate.icon @ iconName='user',className='user-icon'}"></sly>
+
+    <div class="details">
+       <span class="blockquote title">
+          ${login.myAccountTitle @ context='text'}
+       </span>
+      <sly data-sly-call="${button.primaryButton @ className='js-login-button',
+         urlLabel=login.loginCtaLabel}"></sly>
+      <span class="register body-copy-s">
+        ${login.registrationLabel  @ context='text'}
+        <span class="register-cta js-register-button">${login.registrationLink  @
+        context='html'}</span>
+      </span>
+
+      <div class="my-account-footer">
+        <sly data-sly-test="${inheritedPageProperties['favouriteOrSpace'] == 'addtospace'}">
+          <sly
+              data-sly-call="${textLink.textLink @ urlLabel=myWorkspaceTitle, url=myWorkspaceLink,
+            iconName='star-icon',iconClass='icon',className='body-copy-s js-favourite-button'}"></sly>
+        </sly>
+        <sly data-sly-test="${inheritedPageProperties['favouriteOrSpace'] == 'favourite'}">
+          <sly
+              data-sly-call="${textLink.textLink @ urlLabel=scrapBookLabel, url=scrapBookLink,
+            iconName='heart-empty',iconClass='icon',className='body-copy-s js-favourite-button'}"></sly>
+        </sly>
+      </div>
+    </div>
+
+    <div class="logged-in-details">
+      <!--/* API integration and check for login status and update code */-->
+        <sly
+            data-sly-call="${textLink.textLink @ urlLabel=login.myAccountLoggedInTitle,
+          className='blockquote title', url=login.myAccountPage}"></sly>
+      <span class="user-name body-copy-xs js-user-name"></span>
+
+      <div class="my-account-footer">
+        <sly
+            data-sly-call="${textLink.textLink @ urlLabel=login.logoutCtaLabel, iconName='logout',
+          className='body-copy-s js-logout-button', url='#'}"></sly>
+        <sly data-sly-test="${inheritedPageProperties['favouriteOrSpace'] == 'addtospace'}">
+          <sly
+              data-sly-call="${textLink.textLink @ urlLabel=myWorkspaceTitle, url=myWorkspaceLink,
+            iconName='star-icon',iconClass='icon',className='body-copy-s js-favourite-button'}"></sly>
+        </sly>
+        <sly data-sly-test="${inheritedPageProperties['favouriteOrSpace'] == 'favourite'}">
+          <sly
+              data-sly-call="${textLink.textLink @ urlLabel=scrapBookLabel, url=scrapBookLink,
+            iconName='heart-empty',iconClass='icon',className='body-copy-s js-favourite-button'}"></sly>
+        </sly>
+        <div class="my-account-history">
+          <sly data-sly-call="${login.orderHistoryPage @ urlLabel=login.orderHistoryPage, iconName='order-title-small',
+          className='body-copy-s js-order-history-button', url='#'}"></sly>
+        </div>
+      </div>
+    </div>
+  </div>
+</sly>
+
